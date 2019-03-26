@@ -19,7 +19,7 @@ func main() {
 		Items:       branchs,
 	}
 	app := cli.NewApp()
-	app.Name = "branchdeletor"
+	app.Name = "bdd"
 	app.Action = func(c *cli.Context) error {
 		_, _, err := prompt.Run()
 		if err != nil {
