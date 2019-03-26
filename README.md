@@ -2,5 +2,12 @@
 `go get -u github.com/suguanyang/bdd`
 
 ##USAGE
-![usage](http://g.recordit.co/BLw1hBv0ug.gif)
 
+#### Delete branchs
+
+![usage](http://g.recordit.co/nTy1u4UOi8.gif)
+
+
+#### Search branch
+
+![usage](http://g.recordit.co/xuQ9zrBQAF.gif)

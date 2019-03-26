@@ -21,7 +21,7 @@ func main() {
 	branchs := branch.GetBranchs()
 	chosedIndex := []int{}
 	prompt := promptui.Select{
-		Label:       "Branchs: ",
+		Label:       "Branchs",
 		Checkbox:    true,
 		ChosedIcon:  promptui.IconGood,
 		ChosenIndex: &chosedIndex,
