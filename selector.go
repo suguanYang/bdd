@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/suguanyang/bdd/branch"
 	"github.com/suguanyang/promptui"
@@ -20,6 +21,13 @@ func getChosedBranchs(chosedIndex []int, branchs []string) []string {
 func main() {
 	branchs := branch.GetBranchs()
 	chosedIndex := []int{}
+	searcher := func(input string, index int) bool {
+		branch := branchs[index]
+		name := strings.Replace(strings.ToLower(branch), " ", "", -1)
+		input = strings.Replace(strings.ToLower(input), " ", "", -1)
+
+		return strings.Contains(name, input)
+	}
 	prompt := promptui.Select{
 		Label:       "Branchs: ",
 		Checkbox:    true,
@@ -37,10 +45,6 @@ func main() {
 			Usage:       "chose how many branchs `per` a page",
 			Destination: &size,
 		},
-		cli.BoolTFlag{
-			Name:  "checkout",
-			Usage: "git checkout",
-		},
 	}
 	app.Action = func(c *cli.Context) error {
 		convertedSize, err := strconv.Atoi(size)
@@ -49,7 +53,8 @@ func main() {
 			convertedSize = 5
 		}
 		prompt.Size = convertedSize
-		if c.Bool("checkout") {
+		if c.NArg() > 0 && c.Args().First() == "checkout" {
+			prompt.Searcher = searcher
 			prompt.Checkbox = false
 		}
 		_, chosedBranch, promptErr := prompt.Run()
