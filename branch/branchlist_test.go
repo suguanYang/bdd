@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/suguanyang/commandlist/branch"
+	"github.com/suguanyang/bdd/branch"
 )
 
 func TestGetBranchs(t *testing.T) {

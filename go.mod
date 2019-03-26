@@ -1,4 +1,4 @@
-module github.com/suguanyang/commandlist
+module github.com/suguanyang/bdd
 
 go 1.12
 
