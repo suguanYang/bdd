@@ -33,10 +33,19 @@ func getGitBranch() string {
 	return string(branchs)
 }
 
-// DeleteBranches delete passed branch
-func DeleteBranches(branchs []string) {
+// Delete delete passed branch
+func Delete(branchs []string) {
 	cmdList := append([]string{"branch", "-D"}, branchs...)
 	cmd := exec.Command("git", cmdList...)
+	err := cmd.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Checkout git checkout
+func Checkout(branch string) {
+	cmd := exec.Command("git", "checkout", branch)
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)

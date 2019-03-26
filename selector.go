@@ -4,10 +4,18 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/suguanyang/commandlist/branch"
+	"github.com/suguanyang/bdd/branch"
 	"github.com/suguanyang/promptui"
 	"gopkg.in/urfave/cli.v1"
 )
+
+func getChosedBranchs(chosedIndex []int, branchs []string) []string {
+	chosedBranchs := []string{}
+	for _, chosed := range chosedIndex {
+		chosedBranchs = append(chosedBranchs, branchs[chosed])
+	}
+	return chosedBranchs
+}
 
 func main() {
 	branchs := branch.GetBranchs()
@@ -29,6 +37,10 @@ func main() {
 			Usage:       "chose how many branchs `per` a page",
 			Destination: &size,
 		},
+		cli.BoolTFlag{
+			Name:  "checkout",
+			Usage: "git checkout",
+		},
 	}
 	app.Action = func(c *cli.Context) error {
 		convertedSize, err := strconv.Atoi(size)
@@ -37,16 +49,15 @@ func main() {
 			convertedSize = 5
 		}
 		prompt.Size = convertedSize
-		_, _, promptErr := prompt.Run()
-
-		chosedBranchs := []string{}
-		for _, chosed := range chosedIndex {
-			chosedBranchs = append(chosedBranchs, branchs[chosed])
+		if c.Bool("checkout") {
+			prompt.Checkbox = false
 		}
-		if len(chosedBranchs) == 0 {
-			return nil
+		_, chosedBranch, promptErr := prompt.Run()
+		if prompt.Checkbox {
+			branch.Delete(getChosedBranchs(chosedIndex, branchs))
+		} else {
+			branch.Checkout(chosedBranch)
 		}
-		branch.DeleteBranches(chosedBranchs)
 		return promptErr
 	}
 	app.Run(os.Args)
